@@ -18,12 +18,7 @@ dbConnection();
 
 // rutas 
 
-app.get('/', (req,res) => {
-    res.json({
-        ok : true,
-        msg : 'Hola Mundo'
-    })
-});
+app.use('/api/usuarios', require('./routes/usuarios'));
 
 
 // el process.env.PORT viene del require('dotenv')
