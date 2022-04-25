@@ -1,5 +1,7 @@
 const { response } = require('express');
 
+const bcrypt = require('bcryptjs');
+
 const Usuario = require('../models/usuario');
 
 const getUsuarios = async (req, res) => {
@@ -14,7 +16,7 @@ const getUsuarios = async (req, res) => {
 
 const crearUsuario = async (req, res = response) => {
 
-    const { nombre, password, email } = req.body;
+    const { password, email } = req.body;
 
     try {
 
@@ -29,6 +31,12 @@ const crearUsuario = async (req, res = response) => {
 
         const usuario = new Usuario(req.body);
 
+        // Encryptar Contraseña
+
+        const salt = bcrypt.genSaltSync();
+        usuario.password = bcrypt.hashSync(password,salt);
+
+        // Guardar Usuario
         await usuario.save();
 
         res.json({
@@ -45,7 +53,29 @@ const crearUsuario = async (req, res = response) => {
 
 };
 
+const actualizarUsuario = async(req, res = response) => {
+    
+    const uid = req.params.id;
+
+    try {
+
+        res.json({
+            ok : true,
+            uid
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok : false,
+            msg : 'Error inesperado'
+        })
+    }
+
+};
+
 module.exports = {
     getUsuarios,
-    crearUsuario
+    crearUsuario,
+    actualizarUsuario
 }
