@@ -58,10 +58,35 @@ const actualizarUsuario = async(req, res = response) => {
     const uid = req.params.id;
 
     try {
+        const usuarioDB = await Usuario.findById( uid );
+        if (!usuarioDB){
+            res.status(404).json({
+                ok : false,
+                msg : 'No existe usuario con ese id'
+            })
+        };
+
+        //Actualizaciones
+        const {password, google,email, ...campos} = req.body;
+        if ( usuarioDB.email !== req.body.email ){
+
+            const existeEmail = await Usuario.findOne({email});
+            if (existeEmail){
+                return res.status(400).json({
+                    ok : false,
+                    msg : 'Ya existe un usuario con ese email'
+                })
+            }
+        };
+
+         campos.email = email;
+
+
+        const usuarioActualizado = await Usuario.findByIdAndUpdate(uid,campos,{ new : true });
 
         res.json({
             ok : true,
-            uid
+            usuario : usuarioActualizado
         })
         
     } catch (error) {
@@ -74,8 +99,47 @@ const actualizarUsuario = async(req, res = response) => {
 
 };
 
+const borrarUsuario = async (req, res = response) =>{
+
+
+    const uid = req.params.id;
+
+    try {
+
+
+        const usuarioDB = await Usuario.findById(uid);
+
+        if (!usuarioDB){
+            return res.status(404).json({
+                ok : false,
+                msg : 'Usuario no Registrado'
+            })
+        };
+
+
+
+        await Usuario.findByIdAndDelete(uid);
+
+        res.status(200).json({
+            ok : true,
+            msg : 'Usuario Eliminado...'
+        })
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok : false,
+            msg : 'Error Inesperado'
+        })
+        
+    }
+
+
+};
+
 module.exports = {
     getUsuarios,
     crearUsuario,
-    actualizarUsuario
+    actualizarUsuario,
+    borrarUsuario
 }

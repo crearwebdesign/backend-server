@@ -22,6 +22,7 @@ dbConnection();
 // rutas 
 
 app.use('/api/usuarios', require('./routes/usuarios'));
+app.use('/api/login', require('./routes/auth'));
 
 
 // el process.env.PORT viene del require('dotenv')
