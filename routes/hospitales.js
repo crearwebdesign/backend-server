@@ -21,7 +21,11 @@ const router = Router();
 
 router.get('/', getHospitales);
 
-router.post('/',[]
+router.post('/',[
+    validarJWT,
+    check('nombre','El Nombre no debe estar vacío').not().isEmpty(),
+    validarCampos
+     ]
              ,crearHospital);
 
 router.put('/:id',
