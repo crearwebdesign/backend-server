@@ -1,6 +1,6 @@
 /*
 
-ruta :  /api/todo/:busqueda
+ruta :  /api/todo/
 
 
 */
@@ -8,12 +8,14 @@ ruta :  /api/todo/:busqueda
 
 const { Router}  = require('express');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { getTodo } = require('../controllers/busquedas');
+const { getTodo,getDocumentosColeccion } = require('../controllers/busquedas');
+
 
 const router = Router();
 
 
 router.get('/:busqueda',validarJWT,getTodo);
+router.get('/coleccion/:tabla/:busqueda',validarJWT,getDocumentosColeccion);
 
 
 
