@@ -1,5 +1,6 @@
 const {response} = require('express');
 const { v4 : uuidv4} = require('uuid');
+const { actualizarImagen } = require('../helpers/actualizar-imagen');
 
 
 const fileUpLoad = (req, res = response) => {
@@ -63,13 +64,20 @@ const fileUpLoad = (req, res = response) => {
                 msg : 'Error al subir la imagen'
             })
         };
+        // actualizar base de datos
+
+        actualizarImagen( tipo, id, nombreArchivo);
+
         res.json({
             ok : true,
             ms : 'Archivo Subido',
             nombreArchivo
         })
 
-    })
+    });
+
+
+
 
 
 
