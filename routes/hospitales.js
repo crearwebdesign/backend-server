@@ -29,7 +29,11 @@ router.post('/',[
              ,crearHospital);
 
 router.put('/:id',
-            []
+            [
+                validarJWT,
+                check('nombre','El Nombre no debe estar vacío').not().isEmpty(),
+                validarCampos
+            ]
 , actualizarHospital);
 
 router.delete('/:id',borrarHospital);
