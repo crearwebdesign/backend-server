@@ -36,7 +36,7 @@ router.put('/:id',
             ]
 , actualizarHospital);
 
-router.delete('/:id',borrarHospital);
+router.delete('/:id',validarJWT,borrarHospital);
 
 
 
